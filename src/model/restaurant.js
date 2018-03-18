@@ -13,6 +13,7 @@ let RestaurantSchema = new Schema({
     requried: true
   },
   avgCost: Number,
+  picture: String,
   geometry:{ 
     type: { type: String, default: 'Point'},
     coordinates: [Number]

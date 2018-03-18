@@ -13,6 +13,7 @@ api.post('/add', authenticate, (req, res) => {
   let newRest = new Restaurant();
   newRest.name = req.body.name;
   newRest.foodType = req.body.foodType;
+  newRest.picture = req.body.picture,
   newRest.avgCost = req.body.avgCost,
   newRest.geometry.coordinates = req.body.geometry.coordinates;
   newRest.save(err => {
@@ -68,7 +69,7 @@ api.delete('/:id', (req, res) => {
   });
 });
 
-api.post('/reviews/add/:id', (req, res) => {
+api.post('/reviews/add/:id', authenticate, (req, res) => {
   Restaurant.findById(req.params.id, (err, restaurant) => {
     if (err) {
       res.send(err);
@@ -87,7 +88,7 @@ api.post('/reviews/add/:id', (req, res) => {
         if(err) {
           res.send(err);
         }
-        res.json({ message: 'Food truck review saved'})
+        res.json({ message: 'Restaurant review saved'})
       });
     });
   });
