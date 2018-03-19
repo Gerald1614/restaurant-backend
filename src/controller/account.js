@@ -11,7 +11,7 @@ export default ({ config, db}) => {
   let api = Router();
 
 api.post('/register', (req, res) => {
-  Account.register(new Account({ username: req.body.email}), req.body.password, function(err, account) {
+  Account.register(new Account({ username: req.body.email, name: req.body.name}), req.body.password, function(err, account) {
     if (err) {
       res.send(err);
     }

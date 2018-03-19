@@ -8,6 +8,8 @@ let ReviewSchema = new Schema({
     required: true
   },
   text: String,
+  rate: Number,
+  username: String,
   restaurant: {
     type: Schema.Types.ObjectId,
     ref:'Restaurant',

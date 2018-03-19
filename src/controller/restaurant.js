@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { Router } from 'express';
 import Restaurant from '../model/restaurant';
 import Review from '../model/review'
+import Account from '../model/account'
 
 import { authenticate } from '../middleware/authMiddleware';
 
@@ -70,15 +71,24 @@ api.delete('/:id', (req, res) => {
 });
 
 api.post('/reviews/add/:id', authenticate, (req, res) => {
+  let userName;
+  Account.findById(req.user.id, (err, account) => {
+    if (err) {
+      res.send(err);
+    }
+    userName = account.name
+  })
   Restaurant.findById(req.params.id, (err, restaurant) => {
     if (err) {
       res.send(err);
     }
     let newReview = new Review();
-
+    newReview.username = userName;
     newReview.title = req.body.title;
     newReview.text = req.body.text;
-    newReview.restaurant = restaurant._id
+    newReview.rate = req.body.rate;
+    newReview.restaurant = restaurant._id;
+  
     newReview.save((err, review) => {
       if (err) {
         res.send(err);
