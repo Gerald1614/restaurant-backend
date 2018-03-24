@@ -12,6 +12,12 @@ let RestaurantSchema = new Schema({
     type: String,
     requried: true
   },
+  description: {
+    type: String,
+  },
+  website: {
+    type: String,
+  },
   avgCost: Number,
   picture: String,
   geometry:{ 
