@@ -18,12 +18,13 @@ api.post('/add', authenticate, (req, res) => {
   newRest.avgCost = req.body.avgCost;
   newRest.description = req.body.description;
   newRest.website = req.body.website;
+  newRest.avgRating = null;
   newRest.geometry.coordinates = req.body.geometry.coordinates;
   newRest.save(err => {
     if (err) {
       res.status(500).send("There was a problem adding the information to the database.");
     }
-    res.status(200).json({message: 'Restaurant saved succesfully'});
+    res.status(200).send(newRest);
   });
 });
 
@@ -45,17 +46,17 @@ api.get('/:id', (req, res) => {
   });
 });
 
-api.put('/:id', (req, res) => {
+api.put('/:id', authenticate, (req, res) => {
   Restaurant.findById(req.params.id, (err, restaurant) => {
     if (err) {
       res.send(err);
     }
-    restaurant.name = req.body.name;
+    restaurant.avgRating = req.body.avgRating;
     restaurant.save(err => {
       if (err) {
       res.send(err);
     }
-    res.status(200).json({ message: "Restaurant Info Updated" })
+    res.status(200).send(restaurant)
     });
   });
 });
@@ -73,7 +74,6 @@ api.delete('/:id', (req, res) => {
 
 api.post('/reviews/add/:id', authenticate, (req, res) => {
   let userName;
-  console.log(req)
   Account.findById(req.user.id, (err, account) => {
     if (err) {
       res.status(500).send("There was a problem adding the information to the database.");
@@ -92,7 +92,6 @@ api.post('/reviews/add/:id', authenticate, (req, res) => {
       newReview.text = req.body.text;
       newReview.rate = req.body.rate;
       newReview.restaurant = req.params.id;
-    
       newReview.save((err, review) => {
         if (err) {
           res.status(500).send("There was a problem adding the information to the database.");
