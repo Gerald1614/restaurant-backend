@@ -62,6 +62,17 @@ api.put('/:id', authenticate, (req, res) => {
 });
 
 api.delete('/:id', (req, res) => {
+  Restaurant.findById(req.params.id, (err, restaurant) => {
+    if (err) {
+      res.status(500).send("There was a problem adding the information to the database.");
+    }
+    console.log(restaurant.reviews)
+  restaurant.reviews.forEach( elem => {
+    Review.findByIdAndRemove(elem, (err, review) => {
+      console.log(elem)
+    });
+  })
+}).then(
   Restaurant.remove({
     _id: req.params.id
   }, (err, restaurant) => {
@@ -69,7 +80,9 @@ api.delete('/:id', (req, res) => {
       res.send(err);
     }
     res.status(200).json({ message: "Restaurant Succesfully Removed"})
-  });
+  })
+)
+
 });
 
 api.post('/reviews/add/:id', authenticate, (req, res) => {
@@ -87,7 +100,6 @@ api.post('/reviews/add/:id', authenticate, (req, res) => {
       }
       let newReview = new Review();
       newReview.username = userName;
-      console.log(newReview.username);
       newReview.title = req.body.title;
       newReview.text = req.body.text;
       newReview.rate = req.body.rate;
