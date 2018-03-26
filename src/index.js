@@ -8,13 +8,17 @@ const LocalStrategy = require('passport-local').Strategy;
 import config from './config';
 import routes from './routes';
 
+
 let app = express();
 app.server = http.createServer(app);
+
+app.use(express.static(__dirname + 'public')); // for serving the HTML file
 
 //middleware
 app.use(bodyParser.json({
   limit: config.bodyLimit
 }));
+
 
 app.use(function (req, res, next) {
 

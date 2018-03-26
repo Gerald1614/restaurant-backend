@@ -3,18 +3,26 @@ import { Router } from 'express';
 import Restaurant from '../model/restaurant';
 import Review from '../model/review'
 import Account from '../model/account'
+import multer from 'multer';
+
+var upload = multer({ dest: __dirname+ '../../../public/uploads/' });
+var type = upload.single('file');
 
 import { authenticate } from '../middleware/authMiddleware';
 
 export default({ config, db }) => {
   let api = Router();
 
+api.post('/uploads', type, (req, res) => {
+    return res.json(req.file);
+});
   // '/v1/restaurant/add'
 api.post('/add', authenticate, (req, res) => {
+  console.log(req.file)
   let newRest = new Restaurant();
   newRest.name = req.body.name;
   newRest.foodType = req.body.foodType;
-  newRest.picture = req.body.picture;
+  newRest.picture = {data: fsreadFilesync(req.file), contentType: 'image/png'};
   newRest.avgCost = req.body.avgCost;
   newRest.description = req.body.description;
   newRest.website = req.body.website;
