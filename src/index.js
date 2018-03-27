@@ -11,8 +11,7 @@ import routes from './routes';
 
 let app = express();
 app.server = http.createServer(app);
-
-app.use(express.static(__dirname + 'public')); // for serving the HTML file
+app.use('/uploads', express.static(__dirname + '/public/uploads')); // for serving the HTML file
 
 //middleware
 app.use(bodyParser.json({

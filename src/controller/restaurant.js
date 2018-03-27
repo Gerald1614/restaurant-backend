@@ -5,15 +5,25 @@ import Review from '../model/review'
 import Account from '../model/account'
 import multer from 'multer';
 
-var upload = multer({ dest: __dirname+ '../../../public/uploads/' });
-var type = upload.single('file');
+var multipartUpload = multer({
+  storage: multer.diskStorage({
+  destination: function (req, file, callback) { 
+    let path = __dirname + '../../public/uploads';
+    callback(null, path);
+  },
+  filename: function (req, file, callback) { 
+    callback(null, file.originalname);}})
+}).single('file');
+
+// var upload = multer({ dest: __dirname+ '../../../public/uploads/' });
+// var type = upload.single('file');
 
 import { authenticate } from '../middleware/authMiddleware';
 
 export default({ config, db }) => {
   let api = Router();
 
-api.post('/uploads', type, (req, res) => {
+api.post('/uploads', multipartUpload, (req, res) => {
     return res.json(req.file);
 });
   // '/v1/restaurant/add'
@@ -22,7 +32,7 @@ api.post('/add', authenticate, (req, res) => {
   let newRest = new Restaurant();
   newRest.name = req.body.name;
   newRest.foodType = req.body.foodType;
-  newRest.picture = {data: fsreadFilesync(req.file), contentType: 'image/png'};
+  newRest.picture = req.body.picture;
   newRest.avgCost = req.body.avgCost;
   newRest.description = req.body.description;
   newRest.website = req.body.website;
