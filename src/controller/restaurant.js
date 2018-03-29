@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import { Router } from 'express';
 import Restaurant from '../model/restaurant';
-import Review from '../model/review'
-import Account from '../model/account'
+import Review from '../model/review';
+import Account from '../model/account';
+import City from '../model/city'
 import multer from 'multer';
 
 var multipartUpload = multer({
@@ -27,23 +28,43 @@ api.post('/uploads', multipartUpload, (req, res) => {
     return res.json(req.file);
 });
   // '/v1/restaurant/add'
-api.post('/add', authenticate, (req, res) => {
-  console.log(req.file)
-  let newRest = new Restaurant();
-  newRest.name = req.body.name;
-  newRest.foodType = req.body.foodType;
-  newRest.picture = req.body.picture;
-  newRest.avgCost = req.body.avgCost;
-  newRest.description = req.body.description;
-  newRest.website = req.body.website;
-  newRest.avgRating = null;
-  newRest.geometry.coordinates = req.body.geometry.coordinates;
-  newRest.save(err => {
+api.post('/add/:id', authenticate, (req, res) => {
+  console.log(req.params)
+  City.findById(req.params.id, (err, city) => {
     if (err) {
       res.status(500).send("There was a problem adding the information to the database.");
     }
-    res.status(200).send(newRest);
+    console.log(req.body)
+  let newRest = new Restaurant();
+  newRest.name = req.body.name;
+  newRest.foodType = req.body.foodType;
+  if (req.body.picture=== "http://localhost:3005/uploads/undefined") {
+    newRest.picture= "http://localhost:3005/uploads/restaurant_menu.png";
+  } else {
+    newRest.picture = req.body.picture;
+  }
+  newRest.avgCost = req.body.avgCost;
+  newRest.description = req.body.description;
+  newRest.website = req.body.website;
+  newRest.city = req.params.id;
+  newRest.avgRating = null;
+  newRest.geometry.coordinates = req.body.geometry.coordinates;
+  newRest.save((err, restaurant) => {
+    if (err) {
+      res.status(500).send("There was a problem adding the restaurant." + err);
+    } else {
+      city.restaurants.push(newRest);
+      city.save(err => {
+        if(err) {
+          res.status(500).send("There was a problem updating city restaurant.");
+        }
+        console.log(newRest)
+        res.status(200).send(newRest);
+      });
+    }
+
   });
+});
 });
 
 api.get('/', (req, res) => {
@@ -125,7 +146,6 @@ api.post('/reviews/add/:id', authenticate, (req, res) => {
       newReview.save((err, review) => {
         if (err) {
           res.status(500).send("There was a problem adding the information to the database.");
-  
         }
         restaurant.reviews.push(newReview);
         restaurant.save(err => {
