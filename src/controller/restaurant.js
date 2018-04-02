@@ -76,6 +76,23 @@ api.get('/', (req, res) => {
   })
 })
 
+api.get('/city/:id', (req, res) => {
+  var cityResto = [];
+  var counter=0;
+   City.findById(req.params.id).then((city) => {
+      for (let elem of city.restaurants) {
+        Restaurant.findById(elem).then((restaurant) => {
+           cityResto.push(restaurant);
+           if(counter ==city.restaurants.length-1) {
+            res.status(200).json(cityResto);
+           }
+           counter++;
+         })
+       }
+    })
+    .catch(function (err) {})
+  })
+
 api.get('/:id', (req, res) => {
   Restaurant.findById(req.params.id, (err, restaurant) => {
     if(err) {
@@ -106,11 +123,11 @@ api.delete('/:id', (req, res) => {
       res.status(500).send("There was a problem adding the information to the database.");
     }
     console.log(restaurant.reviews)
-  restaurant.reviews.forEach( elem => {
+  for (let elem of restaurant.reviews) {
     Review.findByIdAndRemove(elem, (err, review) => {
       console.log(elem)
     });
-  })
+  }
 }).then(
   Restaurant.remove({
     _id: req.params.id
