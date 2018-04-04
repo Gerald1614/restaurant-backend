@@ -12,7 +12,7 @@ export default({ config, db }) => {
 
 
 api.post('/add', authenticate, (req, res) => {
-  console.log(req.file)
+  console.log(req.body)
   let newCity = new City();
   newCity.name = req.body.name;
   newCity.save(err => {

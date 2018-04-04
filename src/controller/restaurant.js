@@ -79,7 +79,11 @@ api.get('/', (req, res) => {
 api.get('/city/:id', (req, res) => {
   var cityResto = [];
   var counter=0;
-   City.findById(req.params.id).then((city) => {
+   City.findById(req.params.id)
+   .then((city) => {
+     if (city.restaurants.length === 0) {
+      res.status(500).json(err)
+     } else {
       for (let elem of city.restaurants) {
         Restaurant.findById(elem).then((restaurant) => {
            cityResto.push(restaurant);
@@ -89,8 +93,12 @@ api.get('/city/:id', (req, res) => {
            counter++;
          })
        }
+     }
+
     })
-    .catch(function (err) {})
+    .catch((err) => {
+      res.status(500).json(err)
+    })
   })
 
 api.get('/:id', (req, res) => {
