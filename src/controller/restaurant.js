@@ -150,37 +150,45 @@ api.delete('/:id', (req, res) => {
 });
 
 api.post('/reviews/add/:id', authenticate, (req, res) => {
-  let userName;
-  Account.findById(req.user.id, (err, account) => {
+  var userName;
+  var assert = require('assert')
+  var query = Account.findById(req.user.id, (err, account) => {
     if (err) {
       res.status(500).send("There was a problem adding the information to the database.");
+    } else {
+      userName = account.name
+      console.log(userName)
     }
-    userName = account.name
-    console.log(userName)
-  }).then (
+  })
+  var promise = query.exec();
+  assert.ok(promise instanceof Promise);
+  promise.then (
     Restaurant.findById(req.params.id, (err, restaurant) => {
       if (err) {
         res.status(500).send("There was a problem adding the information to the database.");
-      }
-      let newReview = new Review();
-      newReview.username = userName;
-      newReview.title = req.body.title;
-      newReview.text = req.body.text;
-      newReview.rate = req.body.rate;
-      newReview.restaurant = req.params.id;
-      newReview.save((err, review) => {
-        if (err) {
-          res.status(500).send("There was a problem adding the information to the database.");
-        }
-        restaurant.reviews.push(newReview);
-        restaurant.save(err => {
-          if(err) {
+      } else {
+        let newReview = new Review();
+        newReview.username = userName;
+        newReview.title = req.body.title;
+        newReview.text = req.body.text;
+        newReview.rate = req.body.rate;
+        newReview.restaurant = req.params.id;
+        console.log(newReview)
+        newReview.save((err, review) => {
+          if (err) {
             res.status(500).send("There was a problem adding the information to the database.");
           }
-          console.log(newReview)
-          res.status(200).send(newReview);
-        });
-      });
+          restaurant.reviews.push(newReview);
+          restaurant.save(err => {
+            if(err) {
+              res.status(500).send("There was a problem adding the information to the database.");
+            }
+            console.log(newReview)
+            res.status(200).send(newReview);
+          })
+        })
+      }
+
     })
   )
 
