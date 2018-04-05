@@ -133,10 +133,12 @@ api.delete('/:id', (req, res) => {
     console.log(restaurant.reviews)
   for (let elem of restaurant.reviews) {
     Review.findByIdAndRemove(elem, (err, review) => {
-      console.log(elem)
     });
   }
-}).then(
+  console.log(restaurant.city)
+  City.findByIdAndRemove(restaurant.city, (err, res) => {})
+})
+.then(
   Restaurant.remove({
     _id: req.params.id
   }, (err, restaurant) => {
