@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import passport from 'passport';
+import helmet from 'helmet';
 const LocalStrategy = require('passport-local').Strategy;
 
 import config from './config';
@@ -12,7 +13,7 @@ import routes from './routes';
 let app = express();
 app.server = http.createServer(app);
 app.use('/uploads', express.static(__dirname + '/public/uploads')); // for serving the HTML file
-
+app.use(helmet());
 //middleware
 app.use(bodyParser.json({
   limit: config.bodyLimit
