@@ -23,7 +23,7 @@ app.use(bodyParser.json({
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.setHeader('Access-Control-Allow-Origin', 'https://restaurant-review-app-c6c0b.firebaseapp.com');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -52,7 +52,8 @@ passport.deserializeUser(Account.deserializeUser());
 
 app.use('/V1', routes);
 
-app.server.listen(config.port);
-console.log(`Started on port ${app.server.address().port}`);
+//app.server.listen(config.port);
+app.server.listen(5555);
+//console.log(`Started on port ${app.server.address().port}`);
 
 export default app;
