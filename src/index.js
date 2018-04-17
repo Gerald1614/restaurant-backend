@@ -52,8 +52,7 @@ passport.deserializeUser(Account.deserializeUser());
 
 app.use('/V1', routes);
 
-//app.server.listen(config.port);
-app.server.listen(5555);
-//console.log(`Started on port ${app.server.address().port}`);
+app.server.listen(config.port);
+console.log(`Started on port ${app.server.address().port}`);
 
 export default app;
