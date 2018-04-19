@@ -12,7 +12,7 @@ import routes from './routes';
 
 let app = express();
 app.server = http.createServer(app);
-app.use('/uploads', express.static(__dirname + '/public/uploads')); // for serving the HTML file
+app.use('/uploads', express.static(__dirname + '/public/images')); // for serving the HTML file
 app.use(helmet());
 //middleware
 app.use(bodyParser.json({

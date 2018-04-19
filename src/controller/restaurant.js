@@ -9,7 +9,7 @@ import multer from 'multer';
 var multipartUpload = multer({
   storage: multer.diskStorage({
   destination: function (req, file, callback) { 
-    let path = __dirname + '../../public/uploads';
+    let path = __dirname + '../../public/images';
     callback(null, path);
   },
   filename: function (req, file, callback) { 
@@ -38,8 +38,8 @@ api.post('/add/:id', authenticate, (req, res) => {
   let newRest = new Restaurant();
   newRest.name = req.body.name;
   newRest.foodType = req.body.foodType;
-  if (req.body.picture=== "http://localhost:3005/uploads/undefined") {
-    newRest.picture= "http://localhost:3005/uploads/restaurant_menu.png";
+  if (req.body.picture=== "http://localhost:3005/images/undefined") {
+    newRest.picture= "http://localhost:3005/images/restaurant_menu.png";
   } else {
     newRest.picture = req.body.picture;
   }
