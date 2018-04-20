@@ -12,7 +12,10 @@ import routes from './routes';
 
 let app = express();
 app.server = http.createServer(app);
-app.use('/uploads', express.static(__dirname + '/public/images')); // for serving the HTML file
+if (NODE_ENV === development) {
+  app.use('/images', express.static(config.STATIC_DIR + '/public/images')); // for serving the HTML file
+}
+
 app.use(helmet());
 //middleware
 app.use(bodyParser.json({
@@ -23,7 +26,7 @@ app.use(bodyParser.json({
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'https://restaurant-review-app-c6c0b.firebaseapp.com');
+  res.setHeader('Access-Control-Allow-Origin', config.client_URL);
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
