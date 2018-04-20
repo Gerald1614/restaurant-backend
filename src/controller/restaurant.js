@@ -9,7 +9,7 @@ import multer from 'multer';
 var multipartUpload = multer({
   storage: multer.diskStorage({
   destination: function (req, file, callback) { 
-    let path = __dirname + '../../public/images';
+    let path = __dirname + '/public/images';
     callback(null, path);
   },
   filename: function (req, file, callback) { 
