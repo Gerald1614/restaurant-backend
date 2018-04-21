@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import config from './config';
+var config = require('./config/env.json')[process.env.NODE_ENV || 'development'];
 
 export default callback => {
   let db = mongoose.connect(config.mongoUrl);

@@ -5,7 +5,7 @@ import Review from '../model/review';
 import Account from '../model/account';
 import City from '../model/city'
 import multer from 'multer';
-import config from './config';
+var config = require('../config/env.json')[process.env.NODE_ENV || 'development'];
 
 var multipartUpload = multer({
   storage: multer.diskStorage({

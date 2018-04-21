@@ -1,5 +1,5 @@
 import express from 'express';
-import config from '../config';
+var config = require('../config/env.json')[process.env.NODE_ENV || 'development'];
 import middleware from '../middleware';
 import initializeDb from '../db';
 import restaurant from '../controller/restaurant';

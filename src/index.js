@@ -6,14 +6,15 @@ import passport from 'passport';
 import helmet from 'helmet';
 const LocalStrategy = require('passport-local').Strategy;
 
-import config from './config';
+var config = require('./config/env.json')[process.env.NODE_ENV || 'development'];
 import routes from './routes';
 
 
 let app = express();
 app.server = http.createServer(app);
-if (NODE_ENV === development) {
-  app.use('/images', express.static(config.STATIC_DIR + '/public/images')); // for serving the HTML file
+if (process.env.NODE_ENV === "development") {
+  app.use('/public/images', express.static(__dirname + '/public/images')); 
+  console.log(__dirname)
 }
 
 app.use(helmet());
@@ -53,7 +54,11 @@ passport.use(new LocalStrategy({
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
-app.use('/V1', routes);
+if (process.env.NODE_ENV === "development") {
+  app.use('/V1', routes);
+} else {
+  app.use('/api/V1', routes);
+}
 
 app.server.listen(config.port);
 console.log(`Started on port ${app.server.address().port}`);

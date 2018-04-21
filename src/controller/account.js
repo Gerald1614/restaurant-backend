@@ -3,7 +3,7 @@ import { Router } from 'express';
 import Account from '../model/account';
 import bodyParser from 'body-parser';
 import passport from 'passport';
-import config from '../config';
+var config = require('../config/env.json')[process.env.NODE_ENV || 'development'];
 
 import { generateAccessToken, respond, authenticate } from '../middleware/authMiddleware';
 

@@ -3,6 +3,7 @@ import { Router } from 'express';
 import Restaurant from '../model/restaurant';
 import City from '../model/city';
 import Account from '../model/account';
+var config = require('../config/env.json')[process.env.NODE_ENV || 'development'];
 
 
 import { authenticate } from '../middleware/authMiddleware';
