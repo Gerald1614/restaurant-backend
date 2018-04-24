@@ -57,10 +57,7 @@ app.use(_bodyParser2.default.json({
   limit: config.bodyLimit
 }));
 
-app.use((0, _cors2.default)({
-  origin: config.client_URL,
-  credentials: true
-}));
+app.use((0, _cors2.default)());
 // app.use(function (req, res, next) {
 
 //   res.setHeader('Access-Control-Allow-Origin', config.client_URL);
