@@ -29,15 +29,10 @@ app.use(cors({
   credentials: true
 }));
 // app.use(function (req, res, next) {
-
 //   res.setHeader('Access-Control-Allow-Origin', config.client_URL);
-  
 //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
 //   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Access-Control-Allow-Headers, Authorization, content-type');
-
 //   res.setHeader('Access-Control-Allow-Credentials', true);
-
 //   next();
 // });
 
