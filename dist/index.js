@@ -28,6 +28,10 @@ var _helmet = require('helmet');
 
 var _helmet2 = _interopRequireDefault(_helmet);
 
+var _cors = require('cors');
+
+var _cors2 = _interopRequireDefault(_cors);
+
 var _routes = require('./routes');
 
 var _routes2 = _interopRequireDefault(_routes);
@@ -35,6 +39,7 @@ var _routes2 = _interopRequireDefault(_routes);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var LocalStrategy = require('passport-local').Strategy;
+
 
 var config = require('./config/env.json')[process.env.NODE_ENV || 'development'];
 
@@ -52,24 +57,22 @@ app.use(_bodyParser2.default.json({
   limit: config.bodyLimit
 }));
 
-app.use(function (req, res, next) {
+app.use((0, _cors2.default)({
+  origin: config.client_URL,
+  credentials: true
+}));
+// app.use(function (req, res, next) {
 
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', config.client_URL);
+//   res.setHeader('Access-Control-Allow-Origin', config.client_URL);
 
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Access-Control-Allow-Headers, Authorization, content-type');
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Access-Control-Allow-Headers, Authorization, content-type');
 
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
+//   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Pass to next layer of middleware
-  next();
-});
+//   next();
+// });
 
 app.use(_passport2.default.initialize());
 var Account = require('./model/account');

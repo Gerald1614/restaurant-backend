@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import helmet from 'helmet';
 const LocalStrategy = require('passport-local').Strategy;
+import cors from 'cors';
 
 var config = require('./config/env.json')[process.env.NODE_ENV || 'development'];
 import routes from './routes';
@@ -23,25 +24,22 @@ app.use(bodyParser.json({
   limit: config.bodyLimit
 }));
 
+app.use(cors({
+  origin: config.client_URL,
+  credentials: true
+}));
+// app.use(function (req, res, next) {
 
-app.use(function (req, res, next) {
+//   res.setHeader('Access-Control-Allow-Origin', config.client_URL);
+  
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', config.client_URL);
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Access-Control-Allow-Headers, Authorization, content-type');
 
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   res.setHeader('Access-Control-Allow-Credentials', true);
 
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Access-Control-Allow-Headers, Authorization, content-type');
-
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-
-  // Pass to next layer of middleware
-  next();
-});
+//   next();
+// });
 
 app.use(passport.initialize());
 let Account = require('./model/account');
