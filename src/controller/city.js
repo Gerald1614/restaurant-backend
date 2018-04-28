@@ -14,14 +14,16 @@ export default({ config, db }) => {
 
 api.post('/add', authenticate, (req, res) => {
   console.log(req.body)
-  let newCity = new City();
-  newCity.name = req.body.name;
-  newCity.save(err => {
-    if (err) {
-      res.status(500).send("There was a problem adding the information to the database.");
-    }
-    res.status(200).send(newCity);
-  });
+  if(req.body.name !== '') {
+    let newCity = new City();
+    newCity.name = req.body.name;
+    newCity.save(err => {
+      if (err) {
+        res.status(500).send("There was a problem adding the information to the database.");
+      }
+      res.status(200).send(newCity);
+    });
+  }
 });
 api.get('/', (req, res) => {
   City.find({}, (err, city) => {

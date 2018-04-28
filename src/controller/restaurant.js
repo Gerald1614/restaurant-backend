@@ -28,6 +28,9 @@ api.post('/uploads', multipartUpload, (req, res) => {
 
 api.post('/add/:id', authenticate, (req, res) => {
   console.log(req.params)
+  if (req.params.id !== undefined) {
+
+ 
   City.findById(req.params.id, (err, city) => {
     if (err) {
       res.status(500).send("There was a problem adding the information to the database.");
@@ -63,6 +66,7 @@ api.post('/add/:id', authenticate, (req, res) => {
 
   });
 });
+  }
 });
 
 api.get('/', (req, res) => {
