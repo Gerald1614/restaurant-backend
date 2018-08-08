@@ -3,9 +3,13 @@
 
 ### Getting Started
   git clone git clone https://GeraldM1614@bitbucket.org/pwagram/restaurant-backend.git
+
   cd restaurant-backend
+
   npm install
+
   npm run dev
+  
   npm run build (for production, please adjust env variable to accept connection from frontend)
 
 ### Prerequisites
