@@ -2,7 +2,7 @@
   backend for a Vue project that allow users to create restaurants and give them reviews (https://bitbucket.org/pwagram/restaurant-frontend/src/master/). 
 
 ### Getting Started
-  git clone git clone https://GeraldM1614@bitbucket.org/pwagram/restaurant-backend.git
+  git clone https://GeraldM1614@bitbucket.org/pwagram/restaurant-backend.git
 
   cd restaurant-backend
 
