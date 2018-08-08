@@ -12,7 +12,7 @@ Prerequisites
   nodeJs and NPM
 
 Built With
-  NodeJs, Express, MongoDB, Json webToken, passport,
+  NodeJs, Express, MongoDB, Json webToken, passport, lets ecnrypt for SSL certificates,  Nginx
 
 Authors
   Gerald Michelant
